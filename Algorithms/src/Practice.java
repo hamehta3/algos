@@ -35,6 +35,7 @@ public class Practice {
 		}
 		/*  // this check not needed really
 		if (currIp.size() < 4 && index == ip.length()) {
+			// too short, not enough octets
 			return;
 		}
 		*/
