@@ -33,6 +33,11 @@ public class Practice {
 			// too long, already exceeded our octets
 			return;
 		}
+		/*  // this check not needed really
+		if (currIp.size() < 4 && index == ip.length()) {
+			return;
+		}
+		*/
 		
 		for (int i=1; i<=3; i++) {
 			if (index+i > ip.length()) {
