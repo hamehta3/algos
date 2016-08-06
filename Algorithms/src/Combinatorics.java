@@ -93,7 +93,11 @@ public class Combinatorics {
 	 * Runtime: theoretically it should be O(min(n^k, n^(n-k)), but this algo here has a tighter
 	 * bound of O(min(n^k, 2^n)). The main loop mimics a powerset loop. k is used to trim the
 	 * recursion tree - hence the variable runtime.
-	 * See this link:
+	 * 
+	 * Summation of combinations => 2^n (all combinations = all subsets)
+	 * 
+	 * Refs:
+	 * https://en.wikipedia.org/wiki/Combination#Number_of_k-combinations_for_all_k
 	 * http://stackoverflow.com/questions/24643367/whats-time-complexity-of-this-algorithm-for-finding-all-combinations
 	 */
 	//public static int c=0;
@@ -110,18 +114,21 @@ public class Combinatorics {
 	}
 	
 	/*
-	 * Runtime: Should be O(NpK) but observed is:
+	 * Runtime: Number of permutations = O(NpK) but observed is:
 	 * T(NpK) + T(Np(K-1)) + T(Np(K-2)) + ... 1, i.e. summation of all O(NpI) where I = 0 to K
+	 * 
+	 * Refs:
+	 * http://math.stackexchange.com/questions/161314/what-is-the-sum-of-following-permutation-series-np0-np1-np2-cdots-npn/161317
+	 * Sequence: https://oeis.org/A000522
 	 */
-	public static int c=0;
+	//public static int c=0;
 	public static void nPermuteK(char [] arr, int level, int k, char[] out) {
-		System.out.println(++c);
+		//System.out.println(++c);
 		if (level == k) {
 			print(out);
 			return;
 		}
 
-		
 		for (int j=level; j<arr.length; j++) {
 			out[level] = arr[j];
 			swap(arr, level, j);
