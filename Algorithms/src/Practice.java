@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Practice {
 	
@@ -172,6 +174,129 @@ public class Practice {
 		return mat[0][0];
 	}
 	
+	/*
+	 * How many ways can you encode a numeric string with alphabets?
+	 * Each number maps to its alphabet index
+	 * 
+	 * ex. 123:
+	 * 1,2,3: a,b,c
+	 * 12,3: l,c
+	 * 1,23: a,w
+	 * Answer: 3 ways
+	 * 
+	 * ex2. 678:
+	 * 6,7,8: f,g,h
+	 * Answer: Only 1 way
+	 */
+	public int numValidAlphaEncoding(String s) {
+		if (s == null || s.length() == 0) {
+			return 1;
+		}
+		
+		int count = 0;
+		for (int i=1; i<=2; i++) {
+			if (i > s.length()) {
+				break;
+			}
+			String s1 = s.substring(0,i);
+			if (isValidAlphabet(s1)) {
+				count += numValidAlphaEncoding(s.substring(i));
+			}
+		}
+		return count;
+	}
+	
+	private boolean isValidAlphabet(String s) {
+		int num = Integer.parseInt(s);
+		if (num >= 1 && num <= 26) {
+			return true;
+		}
+		return false;
+	}
+	
+	/*
+	 * Matrix multiplication.
+	 * Parenthesize a chain of matrices (assume the dimensions match). Return all
+	 * possible combinations of parentheses.
+	 * 
+	 * ex. ABCD can be parenthesized in these ways:
+	 * (((AB)C)D)
+	 * ((AB)(CD))
+	 * ((A(BC))D)
+	 * (A((BC)D))
+	 * (A(B(CD)))
+	 * 
+	 * This solution below still repeats a lot of states (used a HashSet to return uniques),
+	 * but that's a band-aid; it doesn't address the deeper issue.
+	 * 
+	 */
+	HashSet<String> matrixMultParen(String s, HashMap<String, HashSet<String>> map) {
+		if (s == null || s.length() == 0) {
+			return new HashSet<String>();
+		}
+		if (map.containsKey(s)) {
+			return map.get(s);
+		}
+		if (s.length() == 1) {
+			HashSet<String> list = new HashSet<String>();
+			list.add(s);
+			return list;
+		}
+		if (s.length() == 2) {
+			HashSet<String> list = new HashSet<String>();
+			list.add("("+s+")");
+			return list;
+		}
+		
+		HashSet<String> op = new HashSet<String>();
+		HashSet<String> result;
+		// j=1: splitting up prefixes, ex. f(ABCD) = A,f(BCD)
+		// j=2: splitting up suffixes, ex. f(ABCD) = f(ABC),D
+		// (couldn't think of a cleaner way)
+		for (int j=1; j<=2; j++) {
+			for (int i=1; i<=2; i++) {
+				String s1, rem;
+				if (j == 1) {
+					if (i == s.length()+1) {
+						break;
+					}
+					s1 = s.substring(0,i);
+					rem = s.substring(i);
+				} else {
+					if (i == s.length()) {
+						break;
+					}
+					s1 = s.substring(s.length()-i);
+					rem = s.substring(0,s.length()-i);
+				}
+				result = matrixMultParen(rem, map);
+				if (s1.length() == 1) {
+					for(String prev : result) {
+						String newExp;
+						if (j == 1) {
+							newExp = "("+s1+prev+")";
+						} else {
+							newExp = "("+prev+s1+")";
+						}
+						op.add(newExp);
+					}
+				} else {
+					for(String prev : result) {
+						String newExp;
+						if (j == 1) {
+							newExp = "(("+s1+")"+prev+")";
+						} else {
+							newExp = "("+prev+"("+s1+"))";
+						}
+						op.add(newExp);
+					}
+				}
+			}
+		}
+		map.put(s, op);
+		return op;
+	}
+	
 	public static void main(String args[]) {
 		Practice p = new Practice();
 		System.out.println(p.parseIp("103721"));
@@ -191,5 +316,9 @@ public class Practice {
 		int [][] mat = new int[4][4];
 		System.out.println(p.numPathsTopDown(mat));
 		System.out.println(p.numPathsBottomUp(mat));
+		
+		System.out.println(p.numValidAlphaEncoding("1234"));
+		
+		System.out.println(p.matrixMultParen("ABCD", new HashMap<String, HashSet<String>>()));
 	}
 }
