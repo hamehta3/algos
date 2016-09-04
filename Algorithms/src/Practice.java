@@ -189,10 +189,21 @@ public class Practice {
 	 * Answer: Only 1 way
 	 */
 	public int numValidAlphaEncoding(String s) {
+		return numValidAlphaEncoding(s, new HashMap<String, Integer>());
+	}
+	
+	/*
+	 * Run time (without dp): O(1.618^n)
+	 * Run time (with dp): O(n)
+	 */
+	public int numValidAlphaEncoding(String s, HashMap<String, Integer> map) {
 		if (s == null || s.length() == 0) {
 			return 1;
 		}
 		
+		if (map.containsKey(s)) {
+			return map.get(s);
+		}
 		int count = 0;
 		for (int i=1; i<=2; i++) {
 			if (i > s.length()) {
@@ -200,9 +211,10 @@ public class Practice {
 			}
 			String s1 = s.substring(0,i);
 			if (isValidAlphabet(s1)) {
-				count += numValidAlphaEncoding(s.substring(i));
+				count += numValidAlphaEncoding(s.substring(i), map);
 			}
 		}
+		map.put(s, count);
 		return count;
 	}
 	
@@ -297,6 +309,50 @@ public class Practice {
 		return op;
 	}
 	
+	public void moveZerosToRight(int [] arr) {
+		if (arr == null || arr.length == 0) {
+			return;
+		}
+		int l = 0;
+		int r = arr.length-1;
+		
+		while (l < r) {
+			if (arr[r] == 0) {
+				r--;
+			}
+			
+			if (l < r && arr[l] == 0 && arr[r] != 0) {
+				int temp = arr[r];
+				arr[r] = arr[l];
+				arr[l] = temp;
+				r--;
+			}
+			
+			l++;
+		}
+	}
+	
+	public int houseRobber(int [] a) {
+		if (a == null || a.length == 0) {
+			return 0;
+		}
+		
+		int even = a[0];
+		int odd = a.length == 1 ? -1: Math.max(a[0], a[1]);
+		
+		for (int i=2; i<a.length; i++) {
+			if (a[i] + even > odd) {
+				int temp = odd;
+				odd = a[i] + even;
+				even = temp;
+			} else {
+				even = odd;
+			}
+		}
+		
+		return odd > even ? odd : even;
+	}
+	
 	public static void main(String args[]) {
 		Practice p = new Practice();
 		System.out.println(p.parseIp("103721"));
@@ -318,7 +374,24 @@ public class Practice {
 		System.out.println(p.numPathsBottomUp(mat));
 		
 		System.out.println(p.numValidAlphaEncoding("1234"));
+		System.out.println(p.numValidAlphaEncoding("100034"));
 		
 		System.out.println(p.matrixMultParen("ABCD", new HashMap<String, HashSet<String>>()));
+		
+		int [] ratings = {1,4,3,3,3,1};
+		int [] ratings2 = {2,3,1,6,5,4};
+		int [] ratings3 = {1,2,3,5};
+		//System.out.println(p.candy(ratings3));
+		
+		int [] a = {6,0,6,4,0,0,4,67,0,1,4,0};
+		int [] a2 = {1, 9, 8, 4, 0, 0, 2, 7, 0, 6, 0, 9, 0};
+		p.moveZerosToRight(a2);
+		for (int i=0; i<a2.length; i++) {
+			System.out.print(a2[i]+" ");
+		}
+		System.out.println();
+		
+		int [] houses = {10,5,30,25,15,30};
+		System.out.println(p.houseRobber(houses));
 	}
 }
