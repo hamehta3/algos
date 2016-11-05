@@ -16,9 +16,9 @@ public class Combinatorics {
 			print(arr);
 			return;
 		}
-		for (int i=index; i<arr.length; i++) {
+		for (int i=index; i<arr.length; i++) {  // Loop from current index through input length
 			swap(arr, i, index);
-			allPerms(arr, index+1);
+			allPerms(arr, index+1);  // Branch off from index of current *function* invocation, not current loop (narrow by index)
 			swap(arr, index, i);
 		}
 	}
@@ -36,11 +36,32 @@ public class Combinatorics {
 	public static void powerset(int[] items, int s, Stack<Integer> res) {
 	     System.out.println(res);
 
-	     for(int i = s; i < items.length; i++) {
+	     for(int i = s; i < items.length; i++) {  // Loop from current index through input length
 	          res.push(items[i]);
-	          powerset(items, i+1, res);
+	          powerset(items, i+1, res);  // Branch off from index of current *loop* invocation (narrow by index + loop)
 	          res.pop();
 	     }
+	}
+	
+	/*
+	 * Runtime: O(2^n)
+	 * T(N) = 2*T(N-1)
+	 * i.e. it doubles every iteration => 2^n
+	 * Two fixed calls per invocation (n times) => 2^n
+	 */
+	public static void powerset2(int [] items, int level, Stack<Integer> res) {
+		if (level >= items.length) {
+			System.out.println(res);
+			return;
+		}
+		
+		// Pick current item
+		res.push(items[level]);
+		powerset2(items, level+1, res);  // Branch off next level (item)
+		res.pop();
+		
+		// Don't pick current item
+		powerset2(items, level+1, res);  // Branch off next level (item)
 	}
 	
 	/*
@@ -200,6 +221,9 @@ public class Combinatorics {
 		int [] items = {1,2,3,4,5};
 		Stack<Integer> st = new Stack<Integer>();
 		powerset(items, 0, st);
+		System.out.println();
+		st = new Stack<Integer>();
+		powerset2(items, 0, st);
 		char [] arr = {'a', 'b', 'c', 'd', 'e'};
 		counter = 0;
 		allPerms(arr, 0);
