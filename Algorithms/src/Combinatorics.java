@@ -234,7 +234,8 @@ public class Combinatorics {
 			sb.append(", ");
 		}
 		String array = (sb.length() == 0) ? sb.toString() : sb.substring(0,  sb.length()-2);
-		return "["+array+"]";	}
+		return "["+array+"]";
+	}
 	
 	public static void main(String [] args) {
 		int [] items = {1,2,3,4,5};
