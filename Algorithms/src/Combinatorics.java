@@ -217,34 +217,66 @@ public class Combinatorics {
 		return false;
 	}
 	
+	public static String printArray(int [] arr) {
+		StringBuilder sb = new StringBuilder();
+		for (int i=0; i<arr.length; i++) {
+			sb.append(arr[i]);
+			sb.append(", ");
+		}
+		String array = (sb.length() == 0) ? sb.toString() : sb.substring(0,  sb.length()-2);
+		return "["+array+"]";
+	}
+	
+	public static String printArray(char [] arr) {
+		StringBuilder sb = new StringBuilder();
+		for (int i=0; i<arr.length; i++) {
+			sb.append(arr[i]);
+			sb.append(", ");
+		}
+		String array = (sb.length() == 0) ? sb.toString() : sb.substring(0,  sb.length()-2);
+		return "["+array+"]";	}
+	
 	public static void main(String [] args) {
 		int [] items = {1,2,3,4,5};
 		Stack<Integer> st = new Stack<Integer>();
+		System.out.println("Power set of "+printArray(items)+":");
 		powerset(items, 0, st);
 		System.out.println();
 		st = new Stack<Integer>();
+		System.out.println("Power set 2 of "+printArray(items)+":");
 		powerset2(items, 0, st);
+		System.out.println();
 		char [] arr = {'a', 'b', 'c', 'd', 'e'};
 		counter = 0;
+		System.out.println("All permutations of "+printArray(arr)+":");
 		allPerms(arr, 0);
+		System.out.println();
 		counter = 0;
+		System.out.println("All permutations (iterative) of "+printArray(arr)+":");
 		System.out.println(allPermsIter(arr));
+		System.out.println();
 		//allSubsets(arr);
 		int k = 3;
 		char [] out = new char[k];
+		System.out.println("nChooseK ("+arr.length+"C"+k+") of "+printArray(arr)+":");
 		nChooseK(arr, 0, k, 0, out);
-		counter = 0;
 		System.out.println();
+		counter = 0;
+		System.out.println("nPermuteK ("+arr.length+"P"+k+") of "+printArray(arr)+":");
 		nPermuteK(arr, 0, k, out);
-		counter = 0;
 		System.out.println();
-		System.out.println(nearbyWords("gi"));
+		counter = 0;
+		String nearbyWordsString = "gi";
+		System.out.println("Nearby words of "+nearbyWordsString+":");
+		System.out.println(nearbyWords(nearbyWordsString));
 		System.out.println();
 		ArrayList<Character> set = new ArrayList<Character>();
 		set.add('a');
 		set.add('b');
 		set.add('c');
 		set.add('d');
+		System.out.println("All subsets of "+set+":");
 		System.out.println(allSubsets(set));
+		System.out.println();
 	}
 }
