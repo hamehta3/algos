@@ -12,7 +12,7 @@ public class Combinatorics {
 	 * T(N) = N*T(N-1)
 	 */
 	public static void allPerms(char [] arr, int index) {
-		if (index == arr.length) {
+		if (index == arr.length) {  // Can also test for the tighter (arr.length-1); that will invoke fewer recursive calls
 			print(arr);
 			return;
 		}
