@@ -45,9 +45,9 @@ public class Combinatorics {
 	 * f(abcd)
 	 * |
 	 * a(0)-------------------------------------b(1)----------------c(2)-------d(3)
-	 * |                                        |					|
+	 * |                                        |                   |
 	 * ab(1)----------------ac(2)----ad(3)      bc(2)---bd(3)       cd(3)
-	 * |                    |					|
+	 * |                    |                   |
 	 * abc(2)---abd(3)      acd(3)              bcd(3)
 	 * |
 	 * abcd(3)
@@ -76,16 +76,16 @@ public class Combinatorics {
 	 * Space: O(n) additional space for the stack which holds _up to_ n elements at any given time
 	 * 
 	 * Visual call tree:
-	 * 																									
-	 * 									 _______________(abcd)______________							Level (start: 0)
-	 * 									/									\
-	 * 						 ______a(bcd)______						 _______(bcd)______					0 (next call 1)
-	 * 						/				   \					/			 	   \
-	 * 				 ___ab(cd)__			  a(cd)			       b(cd)			 __(cd)__			1 (next call 2)
-	 * 				/			\			/	   \			 /	 	\			/		 \
-	 * 			abc(d)		   ab(d)	ac(d)		a(d)		bc(d)	 b(d)	   c(d)		 (d)		2 (next call 3)
-	 * 			/	\		   /   \	/	\		/	\		/	\	 /	\	  /	  \	    /	\
-	 * 		abcd	abc		abd	   ab  acd	ac	   ad	 a	  bcd	bc	bd	 b	 cd	   c   d	[ ]		3 (next call: base case)
+	 * 
+	 *                                  ________________(abcd)______________                            Level (start: 0)
+	 *                                 /                                    \
+	 *                       ______a(bcd)______                      _______(bcd)______                 0 (next call 1)
+	 *                      /                  \                    /                  \
+	 *               ___ab(cd)__              a(cd)               b(cd)              __(cd)__           1 (next call 2)
+	 *              /           \           /       \            /      \           /        \
+	 *           abc(d)        ab(d)     ac(d)       a(d)       bc(d)    b(d)      c(d)      (d)        2 (next call 3)
+	 *          /    \        /   \     /   \       /   \      /    \    /  \     /   \     /   \
+	 *       abcd    abc    abd   ab   acd   ac    ad    a    bcd   bc  bd   b   cd    c   d    [ ]     3 (next call: base case)
 	 * 
 	 * Note: This function has a flat call tree. Personally, I find this method more intuitive.
 	 * 
