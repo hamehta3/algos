@@ -10,6 +10,8 @@ public class Combinatorics {
 	/*
 	 * Runtime: O(n!)
 	 * T(N) = N*T(N-1)
+	 * 
+	 * Space: No additional space; we can reuse the input array by rearranging the order of elements
 	 */
 	public static void allPerms(char [] arr, int index) {
 		if (index == arr.length) {  // Can also test for the tighter (arr.length-1); that will invoke fewer recursive calls
@@ -24,6 +26,8 @@ public class Combinatorics {
 	}
 	
 	/*
+	 * Description: From the current position till the end, pick an element - and recurse for the next position.
+	 * 
 	 * Runtime: O(2^n)
 	 * T(N) = T(N-1) + T(N-2) + T(N-3) + ...
 	 * T(N-1) = T(N-2) + T(N-3) + T(N-4) + ...
@@ -32,11 +36,29 @@ public class Combinatorics {
 	 * T(N) = T(N-1) + T(N-1)
 	 * 		= 2*T(N-1)
 	 * i.e. it doubles every iteration => 2^n
+	 * 
+	 * Space: O(n) additional space for the stack which holds _up to_ n elements at any given time
+	 * 
+	 * Visual call tree:
+	 * [Note: Loop variable (i) is indicated in parentheses]
+	 * 
+	 * f(abcd)
+	 * |
+	 * a(0)-------------------------------------b(1)----------------c(2)-------d(3)
+	 * |										|					|
+	 * ab(1)----------------ac(2)----ad(3)		bc(2)---bd(3)		cd(3)
+	 * |					|					|
+	 * abc(2)---abd(3)		acd(3)				bcd(3)
+	 * |
+	 * abcd(3)
+	 * 
+	 * Note: This function has a progressively narrowing call tree.
+	 * 
 	 */
-	public static void powerset(int[] items, int s, Stack<Integer> res) {
+	public static void powerset(int[] items, int index, Stack<Integer> res) {
 	     System.out.println(res);
 
-	     for(int i = s; i < items.length; i++) {  // Loop from current index through input length
+	     for(int i = index; i < items.length; i++) {  // Loop from current index through input length
 	          res.push(items[i]);
 	          powerset(items, i+1, res);  // Branch off from index of current *loop* invocation (narrow by index + loop)
 	          res.pop();
@@ -44,10 +66,29 @@ public class Combinatorics {
 	}
 	
 	/*
+	 * Description: At every _level_, either pick this element or don't - and recurse for the next level.
+	 * 
 	 * Runtime: O(2^n)
 	 * T(N) = 2*T(N-1)
 	 * i.e. it doubles every iteration => 2^n
 	 * Two fixed calls per invocation (n times) => 2^n
+	 * 
+	 * Space: O(n) additional space for the stack which holds _up to_ n elements at any given time
+	 * 
+	 * Visual call tree:
+	 * 																									
+	 * 									 _______________(abcd)______________							Level (start: 0)
+	 * 									/									\
+	 * 						 ______a(bcd)______						 _______(bcd)______					0 (next call 1)
+	 * 						/				   \					/			 	   \
+	 * 				 ___ab(cd)__			  a(cd)			       b(cd)			 __(cd)__			1 (next call 2)
+	 * 				/			\			/	   \			 /	 	\			/		 \
+	 * 			abc(d)		   ab(d)	ac(d)		a(d)		bc(d)	 b(d)	   c(d)		 (d)		2 (next call 3)
+	 * 			/	\		   /   \	/	\		/	\		/	\	 /	\	  /	  \	    /	\
+	 * 		abcd	abc		abd	   ab  acd	ac	   ad	 a	  bcd	bc	bd	 b	 cd	   c   d	[ ]		3 (next call: base case)
+	 * 
+	 * Note: This function has a flat call tree. Personally, I find this method more intuitive.
+	 * 
 	 */
 	public static void powerset2(int [] items, int level, Stack<Integer> res) {
 		if (level >= items.length) {
