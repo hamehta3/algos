@@ -88,6 +88,7 @@ public class Combinatorics {
 	 *       abcd    abc    abd   ab   acd   ac    ad    a    bcd   bc  bd   b   cd    c   d    [ ]     3 (next call: base case)
 	 * 
 	 * Note: This function has a flat call tree. Personally, I find this method more intuitive.
+	 * Note: Rule of thumb for the 'index' param: for flat trees -> recurse on index+1; for narrowing trees -> recurse on i+1
 	 * 
 	 */
 	public static void powerset2(int [] items, int level, Stack<Integer> res) {
@@ -173,6 +174,24 @@ public class Combinatorics {
 			out[level] = arr[j];
 			nChooseK(arr, level+1, k, j+1, out);
 		}
+	}
+	
+	/*
+     * Simpler version of N-Choose-K algorithm by modifying the standard powerset algorithm:
+     * trim the call tree (and print) every time we hit 'k' elements.
+     * 
+     * Runtime: O(2^n); actual number of calls slightly less due to trimming
+     */
+	public static void nChooseK2(char [] arr, int k, int index, Stack<Character> stack) {
+	    if (stack.size() == k) {
+	        System.out.println(stack);
+	        return;
+	    }
+	    for (int i=index; i<arr.length; i++) {
+	        stack.push(arr[i]);
+	        nChooseK2(arr, k, i+1, stack);
+	        stack.pop();
+	    }
 	}
 	
 	/*
@@ -302,6 +321,10 @@ public class Combinatorics {
 		char [] out = new char[k];
 		System.out.println("nChooseK ("+arr.length+"C"+k+") of "+printArray(arr)+":");
 		nChooseK(arr, 0, k, 0, out);
+		System.out.println();
+		Stack st2 = new Stack<Character>();
+		System.out.println("nChooseK2 [using stack] ("+arr.length+"C"+k+") of "+printArray(arr)+":");
+		nChooseK2(arr, k, 0, st2);
 		System.out.println();
 		counter = 0;
 		System.out.println("nPermuteK ("+arr.length+"P"+k+") of "+printArray(arr)+":");
